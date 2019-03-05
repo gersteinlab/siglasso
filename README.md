@@ -11,8 +11,8 @@ Multiple mutational processes drive carcinogenesis, leaving characteristic signa
 To fetch the package from GitHub (we are working on CRAN submission!), you will also need "devtools"
 ```
 install.packages("devtools")
+library("devtools")
 ```
-siglasso also needs "nnls", "glmnet", "RColorBrewer", and "colorRamps". However, during package installing, they will all be automatically co-installed.
 
 ## Install
 Just one line and vollà!
