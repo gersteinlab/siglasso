@@ -121,7 +121,7 @@ context2spec <- function(input_muts) {
 #' It is a wrapper on bedtools(https://github.com/arq5x/bedtools2/releases). 
 #'
 #' @param bedtools_path Path of bedtool executable, e.g. "~/bedtools/bin/bedtool"
-#' @param vcf_meta A meta vcf file in the format of "vcf_path[space or tab]sample_name",
+#' @param vcf_meta A comma(CSV)/space/tab(TAB)-delimited meta vcf file in the format of "vcf_path[comma, space or tab]sample_name",
 #' Alternatively, you can just supply a list of paths to vcfs without sample_name.
 #' It will then use vcf file names as sample name.:
 #' @param ref_genome An fa file path of reference genome sequence
