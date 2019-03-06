@@ -27,7 +27,7 @@ plot_sigs <- function(sig_weights, re_order = F, sample_order){
 		stop("The length of sample_order needs to match the number of columns of sig_weights")
 	}
 
-	barplot(data.matrix(sig_weights[,sample_order]), col=col_palette(total_sigs), xlab="Samples", ylab="Mutation frac.", legend=NULL)
+	barplot(data.matrix(sig_weights[,sample_order]), col=col_palette(total_sigs), xlab="Samples", ylab="Mutation frac.", legend=NULL, ylim=c(0,1))
 	legend(par("usr")[2], par("usr")[4], non_zero_sigs, col=col_palette(total_sigs), pch=15, xpd=NA, bty="n")
 }
 
