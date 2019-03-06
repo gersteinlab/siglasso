@@ -5,7 +5,7 @@
 \title{Estimate Lasso regression parameters}
 \usage{
 estimate_lasso_parameters(predictor, p_star_hat, gamma, penalty, prior,
-  adaptive, sd_multiplier, elastic_net)
+  adaptive, sd_multiplier, elastic_net = F)
 }
 \arguments{
 \item{predictor}{A signature matrix}

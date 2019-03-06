@@ -17,11 +17,10 @@
 
 estimate_lasso_parameters <- function(predictor, p_star_hat, gamma, penalty, 
 										prior, adaptive, sd_multiplier, 
-										elastic_net) {
+										elastic_net = F) {
     lambda_min1se <- 0
     alpha_min1se <- 1
     alpha_seq <- seq(1, 0.1, -0.1)
-    mysd <- function(y) sqrt(sum((y - mean(y))^2) / length(y))
     
     if (adaptive) {
         ols_fit <- nnls(predictor, p_star_hat)
@@ -38,6 +37,12 @@ estimate_lasso_parameters <- function(predictor, p_star_hat, gamma, penalty,
         }
         predict_sse <- NULL
         K <- nrow(predictor)
+        					lambda_max <- log10(max(glmnet(X, Y, alpha = 1, 
+													intercept = F, 
+													lower.limit = 0, 
+													penalty.factor = 
+													penalty)$lambda))
+					lambda_seq <- 10^seq(lambda_max, lambda_max - 8, -0.05)
         for (h in seq(1, 20)) {
             while (TRUE) {
                 group <- NULL
@@ -91,12 +96,7 @@ estimate_lasso_parameters <- function(predictor, p_star_hat, gamma, penalty,
 					predict_sse <- rbind(predict_sse, predict_sse_alpha_search)
                 } else {
 					a <- 1
-					lambda_max <- log10(max(glmnet(X, Y, alpha = a, 
-													intercept = F, 
-													lower.limit = 0, 
-													penalty.factor = 
-													penalty)$lambda))
-					lambda_seq <- 10^seq(lambda_max, lambda_max - 8, -0.05)
+
 					fit <- glmnet(train_predictor, train_set, alpha = 1, 
 									intercept = F, lower.limit = 0, 
 									lambda = lambda_seq, 
@@ -112,8 +112,14 @@ estimate_lasso_parameters <- function(predictor, p_star_hat, gamma, penalty,
         
         predict_mse <- apply(predict_sse, 2, mean)
         predict_mse_1sd <- apply(predict_sse, 2, sd)
-        mse_max_allowed <- (predict_mse + sd_multiplier * 
-									predict_mse_1sd)[which.min(predict_mse)]
+        
+        # minor difference (min+sd_at_min) or (min + sd_at_oth_lambda)
+        # the latter gives sparser results  (used in cv.glmnet)
+        
+        # mse_max_allowed <- (predict_mse + sd_multiplier * 
+		#							predict_mse_1sd)[which.min(predict_mse)]
+		mse_max_allowed <- min(predict_mse) + sd_multiplier * predict_mse_1sd
+		
         if (elastic_net) {
             idx <- which(predict_mse <= mse_max_allowed)
             alpha_min1se <- max(sort(rep(alpha_seq, length(lambda_seq)), 

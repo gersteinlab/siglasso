@@ -58,6 +58,7 @@ siglasso_internal <- function(spectrum, sig, prior, adaptive, elastic_net,
                                   y = p_star_hat, penalty.factor = penalty)[-1,]
             }
         }
+        
         p_hat <- sig %*% coef_hat
         
         alpha <- max(1 / sum((p_hat - p_star_hat)^2) * 

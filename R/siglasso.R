@@ -34,9 +34,10 @@ siglasso <- function(sample_spectrum, signature, conf = 0.1, prior,
     }
     if (missing(signature)) {
         print("No signature supplied, will use the COSMIC signatures")
-        signature <- devtools::use_data(cosmic30sig)
+        data(cosmic30sig)
+        signature <- data.matrix(cosmic30sig)
     }
-    if (nrow(signature) != length(sample_spectrum)) {
+    if (nrow(signature) != nrow(sample_spectrum)) {
         stop("The number of rows of signatures do not equal the number of 
             rows of the sample spectrum")
     }
@@ -49,42 +50,25 @@ siglasso <- function(sample_spectrum, signature, conf = 0.1, prior,
 
 	sample_spectrum<-data.frame(sample_spectrum)
    
-	if (ncol(sample_spectrum < 2)) {
-		if (length(unique(sample_spectrum)) == 1) {
-			if (unique(sample_spectrum) == 0) {
+	print(sprintf("There are %d samples", ncol(sample_spectrum)))
+	return_weights<-NULL
+	for (k in seq(ncol(sample_spectrum))) {
+		if (length(unique(sample_spectrum[,k])) == 1) {
+			if ((unique(sample_spectrum[,k]))[1] == 0) {
 				stop("The spectrum is an empty vector")
-		    }
-			random_idx <- ceiling(length(sample_spectrum) * runif(2))
-			sample_spectrum[random_idx[1]] <- sample_spectrum[random_idx[1]] - 1
-			sample_spectrum[random_idx[2]] <- sample_spectrum[random_idx[2]] + 1
-		}
-		return_weights<-data.frame(siglasso_internal(sample_spectrum, 
-														signature, prior, 
-														adaptive, elastic_net, 
-														gamma, alpha_min, 
-														iter_max, sd_multiplier,
-														conf))
-	}
-	else {
-		sprintf("There are %d samples", ncol(sample_spectrum))
-		return_weights<-NULL
-		for (k in ncol(sample_spectrum)) {
-			if (length(unique(sample_spectrum[,k])) == 1) {
-				if (unique(sample_spectrum[,k]) == 0) {
-					stop("The spectrum is an empty vector")
-				}
-				random_idx <- ceiling(length(sample_spectrum[,k]) * runif(2))
-				sample_spectrum[random_idx[1]] <- sample_spectrum[
-													random_idx[1],k] - 1
-				sample_spectrum[random_idx[2]] <- sample_spectrum[
-													random_idx[2],k] + 1
 			}
-			return_weights<-cbind(return_weights, siglasso_internal(
-									sample_spectrum[,k], signature, prior, 
-									adaptive, elastic_net, gamma, alpha_min, 
-									iter_max, sd_multiplier, conf)) 
+			random_idx <- ceiling(length(sample_spectrum[,k]) * runif(2))
+			sample_spectrum[random_idx[1]] <- sample_spectrum[
+												random_idx[1],k] - 1
+			sample_spectrum[random_idx[2]] <- sample_spectrum[
+												random_idx[2],k] + 1
 		}
+		return_weights <- cbind(return_weights, siglasso_internal(
+								sample_spectrum[,k], signature, prior, 
+								adaptive, elastic_net, gamma, alpha_min, 
+								iter_max, sd_multiplier, conf)) 
 	}
+	colnames(return_weights) <- colnames(sample_spectrum)
 	if (makeplot){
 		plot_sigs(return_weights)
 	}

@@ -4,11 +4,14 @@
 \alias{plot_sigs}
 \title{Visualize the output of siglasso as barplots}
 \usage{
-plot_sigs(sig_weights, sample_order)
+plot_sigs(sig_weights, re_order = F, sample_order)
 }
 \arguments{
 \item{sig_weights}{A matrix of weigths of signatures in multiple 
 samples}
+
+\item{re_order}{Should it reorder the samples, default is False and 
+always reorder if sample_order is provided}
 
 \item{sample_order}{A vector of how samples should be ordered. If not 
 supplied, it will order by the sum of weights}

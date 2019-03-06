@@ -4,29 +4,31 @@
 #'
 #' @param sig_weights A matrix of weigths of signatures in multiple 
 #' samples
+#' @param re_order Should it reorder the samples, default is False and 
+#' always reorder if sample_order is provided
 #' @param sample_order A vector of how samples should be ordered. If not 
 #' supplied, it will order by the sum of weights 
 #' 
 #' @export
 #'
-plot_sigs <- function(sig_weights, sample_order){
-	par(mar = c(5.1,4.1,4.1,6.1))
+plot_sigs <- function(sig_weights, re_order = F, sample_order){
+	par(mar=c(5.1,4.1,4.1,5.1))
 	col_palette <- colorRampPalette(brewer.pal(11, "Spectral"))
-	total_sigs <- length(rowSums(sig_weights)>0)
+	non_zero_sigs <- which(rowSums(sig_weights)>0)
+	sig_weights <- data.frame(sig_weights[non_zero_sigs,])
+	total_sigs <- nrow(sig_weights)
 	
 	if (missing(sample_order)){
-		sample_order<-order(colSums(sig_weights))
+		if (re_order){
+			sample_order <- order(colSums(sig_weights))
+		} else {sample_order	 <- seq(ncol(sig_weights))}
 	}
 	if (length(sample_order) != ncol(sig_weights)){
-		stop("The length of sample_order needs to match the number of columns 
-                of sig_weights")
+		stop("The length of sample_order needs to match the number of columns of sig_weights")
 	}
 
-	barplot(data.matrix(sig_weights[,sample_order]), xaxt = "n", col = 
-            col_palette(total_sigs), xlab = "Samples", 
-            ylab = "Mutation frac.", legend=NULL)
-	legend(par("usr")[2], par("usr")[4], which(rowSums(sig_weights)>0), 
-            col = col_palette(total_sigs), pch = 15, xpd = NA)
+	barplot(data.matrix(sig_weights[,sample_order]), col=col_palette(total_sigs), xlab="Samples", ylab="Mutation frac.", legend=NULL)
+	legend(par("usr")[2], par("usr")[4], non_zero_sigs, col=col_palette(total_sigs), pch=15, xpd=NA, bty="n")
 }
 
 #' Visualize the output of siglasso, grouped and averaged, as a dotchart
@@ -42,34 +44,30 @@ plot_sigs <- function(sig_weights, sample_order){
 #' "median". Default is mean. 
 #'
 #' @export
-plot_sigs_grouped <- function(sig_weights, groups, stat = "mean"){
-	par(mar = c(5.1,4.1,6.1,3.1))
+plot_sigs_grouped <- function(sig_weights, groups, stat="mean"){
+	par(mar=c(5.1,4.1,6.1,3.1))
 	
 	if (missing(groups)){
-		groups <- seq(1, ncol(sig_weights))
+		groups<-seq(1, ncol(sig_weights))
 	}
 	else if (length(groups) != ncol(sig_weights)){
-		stop("The length of groups needs to match the number of columns 
-                of sig_weights")
+		stop("The length of groups needs to match the number of columns of sig_weights")
 	}
 	
-	sig_weights <- t(sig_weights[rowSums(sig_weights)>0, ])
+	sig_weights<-t(sig_weights[rowSums(sig_weights)>0, ])
 	
-	col_palette <- colorRampPalette(brewer.pal(11, "Spectral"))
+	col_palette<-colorRampPalette(brewer.pal(11, "Spectral"))
 	if (stat == "mean") {
-		plot_data <- aggregate(sig_weights, list(groups), mean)
+		plot_data<-aggregate(sig_weights, list(groups), mean)
 	}
 	else if (stat == "median") {
-		plot_data <- aggregate(sig_weights, list(groups), median)
+		plot_data<-aggregate(sig_weights, list(groups), median)
 	}
-	rownames(plot_data) <- plot_data[, 1]	
-	plot_data <- data.matrix(plot_data[, -1])
-	colnames(plot_data) <- seq(1:ncol(sig_weights))
+	rownames(plot_data)<-plot_data[,1]	
+	plot_data<-data.matrix(plot_data[,-1])
 	
-	dotchart(plot_data, pch = 16, cex = 1.2, col = col_palette(nrow(plot_data)))
-	legend(par("usr")[1], par("usr")[4] * 1.1, rownames(plot_data), 
-            xpd = NA, col = col_palette(nrow(plot_data)), pch = 16, 
-            ncol = nrow(plot_data))
+	dotchart(plot_data, pch=16, cex=1.2, col=col_palette(nrow(plot_data)))
+	legend(par("usr")[1], par("usr")[4]*1.1, rownames(plot_data), xpd=NA, col=col_palette(nrow(plot_data)), pch=16, ncol=nrow(plot_data))
 }
 
 #' Visualize mutational spectrums of a sample, or all samples summarized
@@ -86,35 +84,33 @@ plot_sigs_grouped <- function(sig_weights, groups, stat = "mean"){
 #'
 #' @export
 plot_spectrum <- function(sig_weights, stat="mean", std96sigs = T){
-	par(mar = c(5.1,4.1,6.1,3.1))	
-	col_palette <- unlist(lapply(brewer.pal(6, "Spectral"), 
-                                            function(x) rep(x, 16)))
-	
+	par(mar=c(5.1,4.1,6.1,3.1))	
+	sig_weights <- data.frame(sig_weights)
+	print(nrow(sig_weights))
 	if (std96sigs && nrow(sig_weights) != 96){
 		sprintf("The number of rows is %d, not 96!", nrow(sig_weights))
-		std96sigs <- F
+		std96sigs=F
 	}
 	
 	if (stat == "mean") {
-		plot_data <- apply(sig_weights, 1, mean)
+		plot_data<-apply(sig_weights, 1, mean)
 	}
 	else if (stat == "median") {
-		plot_data <- apply(sig_weights, 1, median)
+		plot_data<-apply(sig_weights, 1, median)
 	}
 
 	if (std96sigs){
-		mut <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
-		plot(plot_data, type = "h", bty = 'n', xaxt = "n", 
-            col = col_palette, lwd = 5, xlab = "", ylab = "Mutation counts")
-		text(seq(8, 88, by = 16), par("usr")[4] * 1.1, xpd = NA, mut, 
-                col = unique(col_palette), font = 2)
+		col_palette <- c("#d73027","#fc8d59","#fee090","#e0f3f8","#91bfdb","#4575b4")
+		col_palette <- unlist(lapply(col_palette, function(x) rep(x, 16)))
+		mut=c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
+		plot(plot_data, type = "h", bty = 'n', xaxt = "n", col=col_palette, lwd=5, xlab="", ylab="Mutation counts")
+		text(seq(8,88,by=16),par("usr")[4]*1.1, xpd=NA, mut, col=unique(col_palette), font=2)
 	}
 	
 	else{
-		col_palette <- colorRampPalette(brewer.pal(11, "Spectral"))
-		plot(plot_data, type = "h", bty = 'n', xaxt = "n", 
-                col = col_palette(length(plot_data)), lwd = 5, xlab = "", 
-                ylab = "Mutation counts")
+		col_palette <- unlist(lapply(brewer.pal(6, "Spectral"), function(x) rep(x, 16)))
+		col_palette<-colorRampPalette(brewer.pal(11, "Spectral"))
+		plot(plot_data, type = "h", bty = 'n', xaxt = "n", col=col_palette(length(plot_data)),lwd=5, xlab="", ylab="Mutation counts")
 	}
 }
 
