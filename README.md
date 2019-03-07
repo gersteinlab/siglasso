@@ -119,10 +119,10 @@ By default, siglasso() automatically generates a barplot of every samples
 ```
 plot_sigs(my_sigs, ...)
 ```
-There is another option to generate a dotchart to compare between samples or samples groups
+There is another option to generate a dotchart to compare between samples or samples groups. For illustration, we randomly group the first four samples and the last three into group 1 & 2. 
 
 ```
-plot_sigs_grouped(my_sigs, [groups]...)
+plot_sigs_grouped(my_sigs, c(rep(1,4), rep(2,3)...)
 ```
 ![Image of plots](https://raw.githubusercontent.com/gersteinlab/siglasso/master/images/plots.jpg)
 
