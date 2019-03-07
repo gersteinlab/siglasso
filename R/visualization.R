@@ -21,7 +21,7 @@ plot_sigs <- function(sig_weights, re_order = F, sample_order){
 	if (missing(sample_order)){
 		if (re_order){
 			sample_order <- order(colSums(sig_weights))
-		} else {sample_order	 <- seq(ncol(sig_weights))}
+		} else {sample_order <- seq(ncol(sig_weights))}
 	}
 	if (length(sample_order) != ncol(sig_weights)){
 		stop("The length of sample_order needs to match the number of columns of sig_weights")
@@ -42,9 +42,11 @@ plot_sigs <- function(sig_weights, re_order = F, sample_order){
 #' samples. If not supplied, it will plot all samples individually
 #' @param stat How to aggregate the weights in a group. Choose "mean" or 
 #' "median". Default is mean. 
+#' @param cex the character size 
+#' @param pt.cex the plotting dots size
 #'
 #' @export
-plot_sigs_grouped <- function(sig_weights, groups, stat="mean"){
+plot_sigs_grouped <- function(sig_weights, groups, stat="mean", cex=0.8, pt.cex=1.5){
 	par(mar=c(5.1,4.1,6.1,3.1))
 	
 	if (missing(groups)){
@@ -66,8 +68,8 @@ plot_sigs_grouped <- function(sig_weights, groups, stat="mean"){
 	rownames(plot_data)<-plot_data[,1]	
 	plot_data<-data.matrix(plot_data[,-1])
 	
-	dotchart(plot_data, pch=16, cex=1.2, col=col_palette(nrow(plot_data)))
-	legend(par("usr")[1], par("usr")[4]*1.1, rownames(plot_data), xpd=NA, col=col_palette(nrow(plot_data)), pch=16, ncol=nrow(plot_data))
+	dotchart(plot_data, pch=16, cex=cex, pt.cex=pt.cex, col=col_palette(nrow(plot_data)))
+	legend(par("usr")[1], par("usr")[4]*1.1, rownames(plot_data), xpd=NA, col=col_palette(nrow(plot_data)), pch=16, ncol=nrow(plot_data), bty = "n")
 }
 
 #' Visualize mutational spectrums of a sample, or all samples summarized
