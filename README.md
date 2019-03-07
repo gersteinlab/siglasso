@@ -9,10 +9,10 @@ Most other methods, including deconstructSigs, is invariant to different mutatio
 
 | Context  | Counts | Percentage |
 | -------- | --- | --- |
-|  AC>AA   |   550  |   5.50%  |
-|  AC>AC   |   335  |   3.35%  |
+|  AC>AA   |   511  |   5.11%  |
+|  AC>AC   |   305  |   3.05%  |
 |  AC>AG   |   96   |   0.96%  |
-|  AC>AT   |   923  |   9.23% |
+|  AC>AT   |   913  |   9.13% |
 |   ...    |   ...  |  ...	|
 |  TT>GT   |   0    |   0	|
 
@@ -99,7 +99,7 @@ my_spectrum <- context2spec((aml_7_wgs, ...)
 It will make plots of the spectrum, to know more, see ```plot_spectrum()```
 ![Image of plot_spectrum](https://raw.githubusercontent.com/gersteinlab/siglasso/master/images/spec.jpg)
 
-### 2. Apply siglasso to context
+### 2. Apply siglasso to spectrum
 This step is straightforward. You can supply your own signature file, or it will use the COSMIC signature. 
 
 ```
