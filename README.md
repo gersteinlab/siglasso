@@ -5,7 +5,7 @@
 
 ## Why you should use sigLASSO?
 First of all, it is because mutation counts matter.
-Most other methods, including deconstructSigs, is invariant to different mutation counts. Let's say we observed 10,000 mutations in a cancer sample, the number is large therefore we should have a pretty good estimation of the mutational spectrum of the tumor. Here is a synthetic example.
+Most other methods, including deconstructSigs, are invariant to different mutation counts. Let's say we observed 10,000 mutations in a cancer sample, the number is large therefore we should have a pretty good estimation of the mutational spectrum of the tumor. Here is a synthetic example.
 
 | Context  | Counts | Percentage |
 | -------- | --- | --- |
@@ -16,7 +16,7 @@ Most other methods, including deconstructSigs, is invariant to different mutatio
 |   ...    |   ...  |  ...	|
 |  TT>GT   |   0    |   0	|
 
-But life is not always so good. This time we sequence another tumor, but observed only 100 mutations. It could be because of exome sequencing, sequencing depth is shallow or the tumor is "silent". Now we are highly unsure about the spectrum.
+But life is not always so good. This time we sequence another tumor but observed only 100 mutations. It could be because of exome sequencing, sequencing depth is shallow or the tumor is "silent". Now we are highly unsure about the spectrum.
 
 | Context  | Counts | Percentage |
 | -------- | --- | --- |
@@ -27,9 +27,9 @@ But life is not always so good. This time we sequence another tumor, but observe
 |   ...    |  ... |  ...  |
 |  TT>GT   |   0  |   0   |
 
-Although the percentage is almost exactly the same as the previous sample, we are much less certain about out estimation here. For example, in the first sample, with 0/10,000 TT>GT, we are pretty certain that this mutation context is very rare. However, in the second sample, the last zero is very likely due to undersampling rather than a real, very low mutation frequency. Therefore, we should expect these two samples to have different signature solutions. A more confident one for the first one, a less, coarse one for the second sampel to reflect the uncertainty in sampling. Most methods, will give identical solutions when the percetage matches.
+Although the percentage is almost exactly the same as the previous sample, we are much less certain about out estimation here. For example, in the first sample, with 0/10,000 TT>GT, we are pretty certain that this mutation context is very rare. However, in the second sample, the last zero is very likely due to undersampling rather than a real, very low mutation frequency. Therefore, we should expect these two samples to have different signature solutions. A more confident one for the first one, a less, coarse one for the second sample to reflect the uncertainty in sampling. Most methods will give identical solutions when the percentage matches.
 
-SigLASSO considers both sampling error(especially significant when the mutation count is low) and signature fitting. 
+SigLASSO considers both sampling error (especially significant when the mutation count is low) and signature fitting. 
 
 Moreover, it parameterizes the model empirically. Let the data speak for itself. Moreover, you will be able to feed prior knowledge of the signatures into the model in a soft thresholding way. No more picking up signature subsets by hand! SigLASSO achieves signature selection by using L1 regularization.
 
@@ -53,7 +53,7 @@ devtools::install_github("gersteinlab/siglasso")
 It is as simple as 2 (or 3) steps! 
 
 ### 0. Starting with VCF
-If started with VCF, that is you do not have flanking nucleotide context...). To make the pacakge transparent and lightweighted, we decide to wrap around a bash script to parse mutational context. To do this, you will need bedtools(https://bedtools.readthedocs.io). For Mac OS, I find pacakge managers, like homebrew(https://brew.sh/), greatly simplify the installation.
+If started with VCF, that is you do not have flanking nucleotide context...). To make the pacakge transparent and lightweighted, we decide to wrap around a bash script to parse mutational context. To do this, you will need bedtools(https://bedtools.readthedocs.io). For Mac OS, I find package managers, like homebrew(https://brew.sh/), greatly simplify the installation.
 ```
 brew install bedtools
 ```
@@ -119,7 +119,7 @@ By default, siglasso() automatically generates a barplot of every samples
 ```
 plot_sigs(my_sigs, ...)
 ```
-There is another option to generate a dotcharts to compare between samples or samples groups
+There is another option to generate a dotchart to compare between samples or samples groups
 
 ```
 plot_sigs_grouped(my_sigs, [groups]...)
