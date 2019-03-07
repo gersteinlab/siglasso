@@ -89,6 +89,13 @@ Now convert this raw mutation context file into spectrum.
 my_context_file <- read.table(path_to_context_file)
 my_spectrum <- context2spec(my_context_file)
 ```
+The package comes with an example of 7 AML mutations downloaded from ftp://ftp.sanger.ac.uk/pub/cancer/AlexandrovEtAl (Alexandrovet al., 2013). It contains 3,414 SNVs, already in the context file format. 
+
+```
+data(aml_7_wgs)
+my_spectrum <- context2spec((aml_7_wgs, ...)
+```
+
 It will make plots of the spectrum, to know more, see ```plot_spectrum()```
 ![Image of plot_spectrum](https://raw.githubusercontent.com/gersteinlab/siglasso/master/images/spec.jpg)
 
