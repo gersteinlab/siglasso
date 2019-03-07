@@ -9,25 +9,25 @@ Most other methods, including deconstructSigs, is invariant to different mutatio
 
 | Context  | Counts | Percentage |
 | -------- | --- | --- |
-|  AC>AA   |   500  |   5  |
-|  AC>AC   |   300  |   3  |
-|  AC>AG   |   100  |   1  |
-|  AC>AT   |   1000 |   10 |
-|   ...    |   ...  |  ... |
-|  TT>GT   |   0    |   0  |
+|  AC>AA   |   550  |   5.50%  |
+|  AC>AC   |   335  |   3.35%  |
+|  AC>AG   |   96   |   0.96%  |
+|  AC>AT   |   923  |   9.23% |
+|   ...    |   ...  |  ...	|
+|  TT>GT   |   0    |   0	|
 
 But life is not always so good. This time we sequence another tumor, but observed only 100 mutations. It could be because of exome sequencing, sequencing depth is shallow or the tumor is "silent". Now we are highly unsure about the spectrum.
 
 | Context  | Counts | Percentage |
 | -------- | --- | --- |
-|  AC>AA   |   5  |   5  |
-|  AC>AC   |   3  |   3  |
-|  AC>AG   |   1  |   1  |
-|  AC>AT   |   1  |   10 |
-|   ...    |  ... |  ... |
-|  TT>GT   |   0  |   0  |
+|  AC>AA   |   5  |   5%  |
+|  AC>AC   |   3  |   3%  |
+|  AC>AG   |   1  |   1%  |
+|  AC>AT   |   9  |   9%  |
+|   ...    |  ... |  ...  |
+|  TT>GT   |   0  |   0   |
 
-Although the percentage is exactly the same as the previous sample, we are much less certain about out estimation here. For example, in the first sample, with 0/10,000 TT>GT, we are pretty certain that this mutation context is very rare. However, in the second sample, the last zero is very likely due to undersampling rather than a real, very low mutation frequency. Therefore, we should expect these two samples to have different signature solutions. A more confident one for the first one, a less, coarse one for the second sampel to reflect the uncertainty in sampling. Most methods, will give identical solutions in these two situations.
+Although the percentage is almost exactly the same as the previous sample, we are much less certain about out estimation here. For example, in the first sample, with 0/10,000 TT>GT, we are pretty certain that this mutation context is very rare. However, in the second sample, the last zero is very likely due to undersampling rather than a real, very low mutation frequency. Therefore, we should expect these two samples to have different signature solutions. A more confident one for the first one, a less, coarse one for the second sampel to reflect the uncertainty in sampling. Most methods, will give identical solutions when the percetage matches.
 
 SigLASSO considers both sampling error(especially significant when the mutation count is low) and signature fitting. 
 
