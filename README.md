@@ -1,5 +1,5 @@
 ![Image of icon](https://raw.githubusercontent.com/gersteinlab/siglasso/master/images/siglasso_icon.jpg)
-## SigLASSO: Optimizing Cancer Mutation Signatures Jointly with Sampling Likelihood
+## Optimizing Cancer Mutation Signatures Jointly with Sampling Likelihood
 
 ![Image of siglasso](https://raw.githubusercontent.com/gersteinlab/siglasso/master/images/siglasso_schematics.png)
 
