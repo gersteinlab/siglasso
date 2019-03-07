@@ -1,4 +1,5 @@
-# SigLASSO: Optimizing Cancer Mutation Signatures Jointly with Sampling Likelihood
+![Image of siglasso](https://raw.githubusercontent.com/gersteinlab/siglasso/master/images/siglasso_icon.png)
+## SigLASSO: Optimizing Cancer Mutation Signatures Jointly with Sampling Likelihood
 ![Image of siglasso](https://raw.githubusercontent.com/gersteinlab/siglasso/master/images/siglasso_schematics.png)
 
 ## Why you should use sigLASSO?
@@ -88,7 +89,7 @@ my_context_file <- read.table(path_to_context_file)
 my_spectrum <- context2spec(my_context_file)
 ```
 It will make plots of the spectrum, to know more, see ```plot_spectrum()```
-
+![Image of plot_spectrum](https://raw.githubusercontent.com/gersteinlab/siglasso/master/images/spec.jpeg)
 
 ### 2. Apply siglasso to context
 This step is straightforward. You can supply your own signature file, or it will use the COSMIC signature. 
@@ -115,7 +116,7 @@ There is another option to generate a dotcharts to compare between samples or sa
 ```
 plot_sigs_grouped(my_sigs, [groups]...)
 ```
-
+![Image of siglasso](https://raw.githubusercontent.com/gersteinlab/siglasso/master/images/plots.jpeg)
 
 ## Longer Introduction
 Multiple mutational processes drive carcinogenesis, leaving characteristic signatures on tumor genomes. Determining the active signatures from the full repertoire of potential ones can help elucidate mechanisms underlying cancer initiation and development. This task involves decomposing the counts of cancer mutations, tabulated according to their trinucleotide context, into a linear combination of known mutational signatures. We formulate it as an optimization problem and develop sigLASSO, a software tool, to carry it out efficiently. SigLASSO features four key aspects: (1) By explicitly adding multinomial sampling into the overall objective function, it jointly optimizes the likelihood of sampling and signature fitting. Considering multinomial sampling is particularly important when mutation counts are low and sampling variance is high, such as in exome sequencing. (2) sigLASSO uses L1 regularization to parsimoniously assign signatures to mutation profiles, leading to sparse and more biologically interpretable solutions resembling previously well-characterized results. (3) sigLASSO fine-tunes model complexity, informed by the scale of the data and biological-knowledge based priors. In particular, instead of hard thresholding and choosing a priori a discrete subset of active signatures, sigLASSO allows continuous priors, which can be effectively learned from auxiliary information. (4) Because of this, sigLASSO can assess model uncertainty and abstain from making certain assignments in low-confidence contexts. Finally, to evaluate SigLASSO signature assignments in comparison to other approaches, we develop a set of reasonable expectations (e.g. sparsity, the ability to abstain, and robustness to noise) that we apply consistently in a variety of contexts.
