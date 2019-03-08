@@ -7,7 +7,7 @@ Author: Shantao Li
 Maintainer: Shantao Li <shantaolee@GMAIL>
 Description: siglasso jointly optimizes the likelihood of sampling and signature fitting to attribute signatures in cancer samples. It uses L1 regulairzation,  is able to take priors and sensitive to observed mutation counts.  
 License: GPL (>= 3)
-Imports:
+Depends:
 	nnls (>= 1.4),
 	glmnet (>= 2.0-16),
 	RColorBrewer (>= 1.1-2),
