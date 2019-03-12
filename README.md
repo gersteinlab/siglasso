@@ -108,7 +108,7 @@ my_sigs <- siglasso(my_spectrum, ...)
 A useful thing is prior, you can pass a vector of the length of the number of signatures, with numbers between 0 (strong preference) and 1 (no preference). We supply a prior file that we curated from COSMIC. 
 
 ```
-load(cosmic_priors)
+data(cosmic_priors)
 colnames(cosmic_prior)
 my_prior = ifelse(cosmic_prior$BRCA==0, 0.1, 1) #adjust the strength to 0.1, BRCA
 my_sigs <- siglasso(my_spectrum, prior = my_prior...)
