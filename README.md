@@ -109,8 +109,8 @@ A useful thing is prior, you can pass a vector of the length of the number of si
 
 ```
 data(cosmic_priors)
-colnames(cosmic_prior)
-my_prior = ifelse(cosmic_prior$BRCA==0, 0.1, 1) #adjust the strength to 0.1, BRCA
+colnames(cosmic_priors)
+my_prior = ifelse(cosmic_priors$BRCA==0, 0.1, 1) #adjust the strength to 0.1, BRCA
 my_sigs <- siglasso(my_spectrum, prior = my_prior...)
 ```
 
