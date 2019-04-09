@@ -27,7 +27,7 @@ But life is not always so good. This time we sequence another tumor but observed
 |   ...    |  ... |  ...  |
 |  TT>GT   |   0  |   0   |
 
-Although the percentage is almost exactly the same as the previous sample, we are much less certain about out estimation here. For example, in the first sample, with 0/10,000 TT>GT, we are pretty certain that this mutation context is very rare. However, in the second sample, the last zero is very likely due to undersampling rather than a real, very low mutation frequency. Therefore, we should expect these two samples to have different signature solutions. A more confident one for the first one, a less, coarse one for the second sample to reflect the uncertainty in sampling. Most methods will give identical solutions when the percentage matches.
+Although the percentage is almost exactly the same as the previous sample, we are much less certain about our estimation here. For example, in the first sample, with 0/10,000 TT>GT, we are pretty certain that this mutation context is very rare. However, in the second sample, the last zero is very likely due to undersampling rather than a real, very low mutation frequency. Therefore, we should expect these two samples to have different signature solutions. A more confident one for the first one, a less, coarse one for the second sample to reflect the uncertainty in sampling. Most methods will give identical solutions when the percentage matches.
 
 SigLASSO considers both sampling error (especially significant when the mutation count is low) and signature fitting. 
 
@@ -53,11 +53,11 @@ devtools::install_github("gersteinlab/siglasso")
 It is as simple as 2 (or 3) steps! 
 
 ### 0. Starting with VCF
-If started with VCF, that is you do not have flanking nucleotide context...). To make the pacakge transparent and lightweighted, we decide to wrap around a bash script to parse mutational context. To do this, you will need bedtools(https://bedtools.readthedocs.io). For Mac OS, I find package managers, like homebrew(https://brew.sh/), greatly simplify the installation.
+If started with VCF, that is if you do not have the flanking nucleotide context. To make the package transparent and lightweight, we decide to wrap around a bash script to parse mutational context. To do this, you will need bedtools(https://bedtools.readthedocs.io). For Mac OS, I find package managers, like homebrew(https://brew.sh/), greatly simplify the installation.
 ```
 brew install bedtools
 ```
-Then you also need to have a uncompressed reference genome that is compatible to your vcf ready. 
+Then you also need to have an uncompressed reference genome that is compatible with your vcf ready. 
 
 Now, before running, one last thing is you need to prepare a meta file specify the paths of all your vcf files. An optional 2nd column can be used to specify sample names. Otherwise, it will grab the filenames as sample names.
 ```
@@ -83,7 +83,7 @@ CGT    C    brca_a_2
 TCC    A    brca_a_1
 ```
 
-Now convert this raw mutation context file into spectrum. 
+Now convert this raw mutation context file into a spectrum. 
 
 ```
 my_context_file <- read.table(path_to_context_file)
@@ -115,7 +115,7 @@ my_sigs <- siglasso(my_spectrum, prior = my_prior[1:30]...) #the last row is "ot
 ```
 
 ### 3. Visualization
-By default, siglasso() automatically generates a barplot of every samples
+By default, siglasso() automatically generates a barplot of every sample
 ```
 plot_sigs(my_sigs, ...)
 ```
