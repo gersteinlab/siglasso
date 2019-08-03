@@ -5,7 +5,7 @@
 
 ## Why you should use sigLASSO?
 First of all, it is because mutation counts matter.
-Most other methods, including deconstructSigs, are invariant to different mutation counts. Let's say we observed 10,000 mutations in a cancer sample, the number is large therefore we should have a pretty good estimation of the mutational spectrum of the tumor. Here is a synthetic example.
+Most other methods, including deconstructSigs, are invariant to different mutation counts. Let's say we observed 10,000 mutations in a cancer sample, this number is large therefore we should have a pretty good estimation of the mutational spectrum of the tumor. Here is a synthetic example.
 
 | Context  | Counts | Percentage |
 | -------- | --- | --- |
@@ -16,7 +16,7 @@ Most other methods, including deconstructSigs, are invariant to different mutati
 |   ...    |   ...  |  ...	|
 |  TT>GT   |   0    |   0	|
 
-But life is not always so good. This time we sequence another tumor but observed only 100 mutations. It could be because of exome sequencing, sequencing depth is shallow or the tumor is "silent". Now we are highly unsure about the spectrum.
+But life is not always so good. This time we sequenced another tumor but observed only 100 mutations. It could be because of exome sequencing, shallow sequencing depth or "silent" tumor. Now we are highly unsure about the spectrum.
 
 | Context  | Counts | Percentage |
 | -------- | --- | --- |
@@ -27,9 +27,9 @@ But life is not always so good. This time we sequence another tumor but observed
 |   ...    |  ... |  ...  |
 |  TT>GT   |   0  |   0   |
 
-Although the percentage is almost exactly the same as the previous sample, we are much less certain about our estimation here. For example, in the first sample, with 0/10,000 TT>GT, we are pretty certain that this mutation context is very rare. However, in the second sample, the last zero is very likely due to undersampling rather than a real, very low mutation frequency. Therefore, we should expect these two samples to have different signature solutions. A more confident one for the first one, a less, coarse one for the second sample to reflect the uncertainty in sampling. Most methods will give identical solutions when the percentage matches.
+Although the percentage is almost exactly the same as the previous sample, we are much less certain about our spectrum estimation here. For example, in the first sample, with 0/10,000 TT>GT, we are pretty certain that this mutation context is very rare. However, in the second sample, the last zero is very likely due to undersampling rather than a real, very low mutation frequency. Therefore, we should expect these two samples to have two different signature solutions. A more confident one for the first one, and a coarse one for the second sample to reflect the uncertainty in sampling. Most current signature tools will give identical solutions when the percentage matches.
 
-SigLASSO considers both sampling error (especially significant when the mutation count is low) and signature fitting. 
+SigLASSO considers both sampling error (especially important when the mutation count is low) and signature fitting. 
 
 Moreover, it parameterizes the model empirically. Let the data speak for itself. Moreover, you will be able to feed prior knowledge of the signatures into the model in a soft thresholding way. No more picking up signature subsets by hand! SigLASSO achieves signature selection by using L1 regularization.
 
@@ -44,7 +44,7 @@ library("devtools")
 If start with vcf files, you will additionally need bedtools and a reference genome FASTA file. See the below.
 
 ## Install
-Just one line and vollà!
+Just one line and voilà!
 ```
 devtools::install_github("gersteinlab/siglasso")
 ```
@@ -59,7 +59,7 @@ brew install bedtools
 ```
 Then you also need to have an uncompressed reference genome that is compatible with your vcf ready. 
 
-Now, before running, one last thing is you need to prepare a meta file specify the paths of all your vcf files. An optional 2nd column can be used to specify sample names. Otherwise, it will grab the filenames as sample names.
+Before running, one last thing is to prepare a meta file specify the paths of all your vcf files. An optional 2nd column can be used to specify sample names. Otherwise, it will grab the filenames as sample names.
 ```
 /Users/data/breast/brca_cancer_1.vcf, brca_a_1
 /Users/data/breast/brca_cancer_1.vcf, brca_b_1
@@ -105,7 +105,7 @@ This step is straightforward. You can supply your own signature file, or it will
 ```
 my_sigs <- siglasso(my_spectrum, ...)
 ```
-A useful thing is prior, you can pass a vector of the length of the number of signatures, with numbers between 0 (strong preference) and 1 (no preference). We supply a prior file that we curated from COSMIC. 
+A useful thing is prior. Pass a vector of the length of the number of signatures, with numbers between 0 (strong preference, we recommend using a small number, e.g. 0.01, rather than 0) and 1 (no preference). We supply a prior file that we curated from COSMIC. 
 
 ```
 data(cosmic_priors)
