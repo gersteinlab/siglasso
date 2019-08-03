@@ -20,14 +20,14 @@
 #' from min MSE.
 #' @param elastic_net oolean variable indicating whether elastic net should 
 #' be used
-#' @param makeplot Boolean variable; if it should barplot the results
+#' @param plot Boolean variable; if it should barplot the results
 #' @return A data.frame of weights of all signatures
 #' @export
 
 siglasso <- function(sample_spectrum, signature, conf = 0.1, prior, 
 						adaptive = T, gamma = 1, alpha_min = 400, 
 						iter_max = Inf, sd_multiplier = 0.5, elastic_net = F, 
-						makeplot = T) {
+						plot = T) {
     if (missing(sample_spectrum)) {
         stop("siglasso(spectrum, signature, prior, adaptive=T, gamma=1, 
                     alpha_min=400, iter_max=20, sd_multiplier=0.5")
@@ -69,7 +69,7 @@ siglasso <- function(sample_spectrum, signature, conf = 0.1, prior,
 								iter_max, sd_multiplier, conf)) 
 	}
 	colnames(return_weights) <- colnames(sample_spectrum)
-	if (makeplot){
+	if (plot){
 		plot_sigs(return_weights)
 	}
 	return(return_weights)
