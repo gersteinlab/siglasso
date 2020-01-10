@@ -18,7 +18,10 @@ two columns, the function assumes all mutations are from one single sample}
 \item{normalize}{Normalization choice ("none", "genome", "exome"). In general,
 when fitting COSMIC signatures, which are derived from a mixture of WGS and WES 
 smaples, we do not think there is additional benefits with normalization (default: none)
-Normalization uses the trinucleotides frequencies in the genome.}
+Normalization uses the trinucleotides frequencies in the genome.
+Please do not use normalized frequencies for futher fitting (siglasso()) as it 
+the mutation counts are no longer discrete. siglass() has an option for such 
+normalization, operating on the signatures.}
 }
 \value{
 Returns a matrix of mutation counts in different context, 

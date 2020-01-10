@@ -15,7 +15,8 @@ siglasso(
   iter_max = Inf,
   sd_multiplier = 0.5,
   elastic_net = F,
-  plot = T
+  plot = T,
+  normalize = "none"
 )
 }
 \arguments{
@@ -47,6 +48,12 @@ from min MSE.}
 be used}
 
 \item{plot}{Boolean variable; if it should barplot the results}
+
+\item{normalize}{whethere to normalize the signatures before fitting. 
+"none", "genome" or "exome". default: "none" (also recommended for COSMIC 
+signatures). Note here because normalized mutation counts will be 
+not discrete anymore. We applied the normalization on the signature.
+They are mathmatically equivalent.}
 }
 \value{
 A data.frame of weights of all signatures
