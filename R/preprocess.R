@@ -46,13 +46,15 @@ reverse_context <- function(mut_context, alt_nuc) {
 #' with the central nucleotide mutated. The second one has the alternative
 #' nucleotide. The third column stores the names of the samples. If it only has
 #' two columns, the function assumes all mutations are from one single sample
+#' @param plot a binary indicator whethere a plot of the specturm will be made 
+#' (default: TRUE)
 #' 
 #' @return Returns a matrix of mutation counts in different context, 
 #' in each of the samples 
 #'
 #' @export
 
-context2spec <- function(input_muts) {
+context2spec <- function(input_muts, plot = TRUE) {
 	input_muts <- apply(data.frame(input_muts), c(1, 2), as.character)
 	
 	if (ncol(input_muts) == 2){
@@ -108,7 +110,9 @@ context2spec <- function(input_muts) {
 		col_idx <- which(unique(input_muts[,3]) == input_muts[k,3])
 		return_mat[row_idx, col_idx] <- return_mat[row_idx, col_idx] + 1	
 	}
-	plot_spectrum(return_mat)
+	if (plot) {
+		plot_spectrum(return_mat)
+	}
 	return(return_mat)
 }
 
