@@ -48,13 +48,17 @@ reverse_context <- function(mut_context, alt_nuc) {
 #' two columns, the function assumes all mutations are from one single sample
 #' @param plot a binary indicator whethere a plot of the specturm will be made 
 #' (default: TRUE)
+#' @param normalize Normalization choice ("none", "genome", "exome"). In general,
+#' when fitting COSMIC signatures, which are derived from a mixture of WGS and WES 
+#' smaples, we do not think there is additional benefits with normalization (default: none)
+#' Normalization uses the trinucleotides frequencies in the genome.
 #' 
 #' @return Returns a matrix of mutation counts in different context, 
 #' in each of the samples 
 #'
 #' @export
 
-context2spec <- function(input_muts, plot = TRUE) {
+context2spec <- function(input_muts, plot = TRUE, normalize = "none") {
 	input_muts <- apply(data.frame(input_muts), c(1, 2), as.character)
 	
 	if (ncol(input_muts) == 2){
@@ -112,6 +116,19 @@ context2spec <- function(input_muts, plot = TRUE) {
 	}
 	if (plot) {
 		plot_spectrum(return_mat)
+	}
+	if (normalize == "genome") {
+		print("Will normalize using genome trinucleotide frequency")
+		data(background_context)
+		return_mat<-return_mat/background_context[,1]
+	}
+	else if (normalize == "exome") {
+		print("Will normalize using genome trinucleotide frequency")
+		data(background_context)
+		return_mat<-return_mat/background_context[,2]
+	}
+	else if (normalzie != "none") {
+		stop("Unexpected normalization! Use 'genome', 'exome' or 'none'")
 	}
 	return(return_mat)
 }
