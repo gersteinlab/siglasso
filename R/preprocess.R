@@ -52,6 +52,9 @@ reverse_context <- function(mut_context, alt_nuc) {
 #' when fitting COSMIC signatures, which are derived from a mixture of WGS and WES 
 #' smaples, we do not think there is additional benefits with normalization (default: none)
 #' Normalization uses the trinucleotides frequencies in the genome.
+#' Please do not use normalized frequencies for futher fitting (siglasso()) as it 
+#' the mutation counts are no longer discrete. siglass() has an option for such 
+#' normalization, operating on the signatures.
 #' 
 #' @return Returns a matrix of mutation counts in different context, 
 #' in each of the samples 

@@ -21,13 +21,18 @@
 #' @param elastic_net oolean variable indicating whether elastic net should 
 #' be used
 #' @param plot Boolean variable; if it should barplot the results
+#' @param normalize whethere to normalize the signatures before fitting. 
+#' "none", "genome" or "exome". default: "none" (also recommended for COSMIC 
+#' signatures). Note here because normalized mutation counts will be 
+#' not discrete anymore. We applied the normalization on the signature.
+#' They are mathmatically equivalent. 
 #' @return A data.frame of weights of all signatures
 #' @export
 
 siglasso <- function(sample_spectrum, signature, conf = 0.1, prior, 
 						adaptive = T, gamma = 1, alpha_min = 400, 
 						iter_max = Inf, sd_multiplier = 0.5, elastic_net = F, 
-						plot = T) {
+						plot = T, normalize = "none") {
     if (missing(sample_spectrum)) {
         stop("siglasso(spectrum, signature, prior, adaptive=T, gamma=1, 
                     alpha_min=400, iter_max=20, sd_multiplier=0.5")
@@ -47,6 +52,22 @@ siglasso <- function(sample_spectrum, signature, conf = 0.1, prior,
     } else if (length(prior) != ncol(signature)) {
         stop("The length of prior does not equal the number of signatures!")
     }
+
+	if (normalize == "genome") {
+		print("Will normalize using genome trinucleotide frequency")
+		data(background_context)
+		signature<-signature*background_context[,1]
+		signature<-t(t(signature)/colSums(signature)) 
+	}
+	else if (normalize == "exome") {
+		print("Will normalize using genome trinucleotide frequency")
+		data(background_context)
+		signature<-signature*background_context[,2]
+		signature<-t(t(signature)/colSums(signature)) 
+	}
+	else if (normalize != "none") {
+		stop("Unexpected normalization! Use 'genome', 'exome' or 'none'")
+	}
 
 	sample_spectrum<-data.frame(sample_spectrum)
    
