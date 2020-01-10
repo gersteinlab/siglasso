@@ -99,6 +99,8 @@ my_spectrum <- context2spec(aml_7_wgs)
 It will make plots of the spectrum, to know more, see ```plot_spectrum()```
 ![Image of plot_spectrum](https://raw.githubusercontent.com/gersteinlab/siglasso/master/images/spec.jpg)
 
+Note: the specturm could be further "normalized". But the COSMIC signatures are built on a mixture of WGS and WES samples, it is unclear such normarlization will provide any advantage. Meanwhile, normalization here destroyed the discrete nature of the mutation counts. So please do not use normarlized spectrum as input for siglasso (step 2). siglasso() provides a normalization option applied to the signatures (which is not recommended either for COSMIC signatures). 
+
 ### 2. Apply siglasso to spectrum
 This step is straightforward. You can supply your own signature file, or it will use the COSMIC signature. 
 
