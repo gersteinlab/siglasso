@@ -105,7 +105,7 @@ This step is straightforward. You can supply your own signature file, or it will
 ```
 my_sigs <- siglasso(my_spectrum, ...)
 ```
-A useful thing is prior. Pass a vector of the length of the number of signatures, with numbers between 0 (strong preference, we recommend using a small number, e.g. 0.01, rather than 0) and 1 (no preference). We supply a prior file that we curated from COSMIC. 
+A useful thing is prior. Pass a vector of the length of the number of signatures, with numbers between 0 (strong preference, we recommend using a small number, e.g. 0.01, rather than 0) and 1 (no preference). We supply a prior file that we curated from COSMIC. The prior file consists of binary indicators of a signature is observed in COSMIC studies (value: 0) or not (value: 1). To apply an easy flat prior on previously observed signatures, just multiple the prior vector with a value less than 1. Here is an example. 
 
 ```
 data(cosmic_priors)
@@ -113,6 +113,8 @@ colnames(cosmic_priors)
 my_prior = ifelse(cosmic_priors$BRCA==0, 0.1, 1) #adjust the strength to 0.1, BRCA
 my_sigs <- siglasso(my_spectrum, prior = my_prior[1:30]...) #the last row is "other signatures"
 ```
+
+
 
 ### 3. Visualization
 By default, siglasso() automatically generates a barplot of every sample
@@ -131,3 +133,6 @@ Multiple mutational processes drive carcinogenesis, leaving characteristic signa
 
 ## Citation 
 (coming soon...)
+
+## Coming soon! 
+Support for the newest COSMIC signature v3 
