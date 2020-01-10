@@ -4,7 +4,7 @@
 \alias{context2spec}
 \title{Construct the spectrum from a mutation file with context}
 \usage{
-context2spec(input_muts, plot = TRUE)
+context2spec(input_muts, plot = TRUE, normalize = "none")
 }
 \arguments{
 \item{input_muts}{A matrix of three columns; the first one is the context, 
@@ -14,6 +14,11 @@ two columns, the function assumes all mutations are from one single sample}
 
 \item{plot}{a binary indicator whethere a plot of the specturm will be made 
 (default: TRUE)}
+
+\item{normalize}{Normalization choice ("none", "genome", "exome"). In general,
+when fitting COSMIC signatures, which are derived from a mixture of WGS and WES 
+smaples, we do not think there is additional benefits with normalization (default: none)
+Normalization uses the trinucleotides frequencies in the genome.}
 }
 \value{
 Returns a matrix of mutation counts in different context, 
