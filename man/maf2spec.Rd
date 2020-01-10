@@ -4,8 +4,13 @@
 \alias{maf2spec}
 \title{Construct the spectrum from a MAF file}
 \usage{
-maf2spec(bedtools_path = "bedtools", maf, ref_genome,
-  context_length = 1, output_file)
+maf2spec(
+  bedtools_path = "bedtools",
+  maf,
+  ref_genome,
+  context_length = 1,
+  output_file
+)
 }
 \arguments{
 \item{bedtools_path}{Path of bedtool executable, e.g. "~/bedtools/bin/bedtool"}

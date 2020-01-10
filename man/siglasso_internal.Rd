@@ -4,8 +4,18 @@
 \alias{siglasso_internal}
 \title{Internal function for sigLASSO}
 \usage{
-siglasso_internal(spectrum, sig, prior, adaptive, elastic_net, gamma,
-  alpha_min, iter_max, sd_multiplier, conf)
+siglasso_internal(
+  spectrum,
+  sig,
+  prior,
+  adaptive,
+  elastic_net,
+  gamma,
+  alpha_min,
+  iter_max,
+  sd_multiplier,
+  conf
+)
 }
 \arguments{
 \item{spectrum}{The mutation spectrum of the target sample}

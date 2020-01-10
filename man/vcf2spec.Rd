@@ -4,8 +4,14 @@
 \alias{vcf2spec}
 \title{Construct the spectrum from a VCF file}
 \usage{
-vcf2spec(bedtools_path = "bedtools", vcf_meta, ref_genome, output_file,
-  context_length = 1, overwrite = F)
+vcf2spec(
+  bedtools_path = "bedtools",
+  vcf_meta,
+  ref_genome,
+  output_file,
+  context_length = 1,
+  overwrite = F
+)
 }
 \arguments{
 \item{bedtools_path}{Path of bedtool executable, e.g. "~/bedtools/bin/bedtool"}

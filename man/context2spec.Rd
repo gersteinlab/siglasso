@@ -4,13 +4,16 @@
 \alias{context2spec}
 \title{Construct the spectrum from a mutation file with context}
 \usage{
-context2spec(input_muts)
+context2spec(input_muts, plot = TRUE)
 }
 \arguments{
 \item{input_muts}{A matrix of three columns; the first one is the context, 
 with the central nucleotide mutated. The second one has the alternative
 nucleotide. The third column stores the names of the samples. If it only has
 two columns, the function assumes all mutations are from one single sample}
+
+\item{plot}{a binary indicator whethere a plot of the specturm will be made 
+(default: TRUE)}
 }
 \value{
 Returns a matrix of mutation counts in different context, 

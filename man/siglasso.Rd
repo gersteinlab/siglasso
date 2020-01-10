@@ -4,9 +4,19 @@
 \alias{siglasso}
 \title{Attributing signatures using sigLASSO}
 \usage{
-siglasso(sample_spectrum, signature, conf = 0.1, prior, adaptive = T,
-  gamma = 1, alpha_min = 400, iter_max = Inf, sd_multiplier = 0.5,
-  elastic_net = F, makeplot = T)
+siglasso(
+  sample_spectrum,
+  signature,
+  conf = 0.1,
+  prior,
+  adaptive = T,
+  gamma = 1,
+  alpha_min = 400,
+  iter_max = Inf,
+  sd_multiplier = 0.5,
+  elastic_net = F,
+  plot = T
+)
 }
 \arguments{
 \item{sample_spectrum}{A data.frame/matrix of mutation counts 
@@ -36,7 +46,7 @@ from min MSE.}
 \item{elastic_net}{oolean variable indicating whether elastic net should 
 be used}
 
-\item{makeplot}{Boolean variable; if it should barplot the results}
+\item{plot}{Boolean variable; if it should barplot the results}
 }
 \value{
 A data.frame of weights of all signatures

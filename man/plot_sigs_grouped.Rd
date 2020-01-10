@@ -4,8 +4,7 @@
 \alias{plot_sigs_grouped}
 \title{Visualize the output of siglasso, grouped and averaged, as a dotchart}
 \usage{
-plot_sigs_grouped(sig_weights, groups, stat = "mean", cex = 0.8,
-  pt.cex = 1.5)
+plot_sigs_grouped(sig_weights, groups, stat = "mean", cex = 0.8, pt.cex = 1.5)
 }
 \arguments{
 \item{sig_weights}{A matrix of weigths of signatures in multiple 
