@@ -101,5 +101,9 @@ siglasso_internal <- function(spectrum, sig, prior, adaptive, elastic_net,
         p_star_hat_now <- p_star_hat
     }
     names(coef_hat) <- colnames(sig)
+	# normalize if the sum > 1 
+	if (sum(coef_hat) > 1) {
+		coef_hat = coef_hat / sum(coef_hat)
+	}
     return(coef_hat)
 }
