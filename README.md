@@ -93,7 +93,7 @@ The package comes with an example of 7 AML mutations downloaded from ftp://ftp.s
 
 ```
 data(aml_7_wgs)
-my_spectrum <- context2spec((aml_7_wgs, ...)
+my_spectrum <- context2spec(aml_7_wgs)
 ```
 
 It will make plots of the spectrum, to know more, see ```plot_spectrum()```
