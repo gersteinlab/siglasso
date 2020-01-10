@@ -127,7 +127,7 @@ context2spec <- function(input_muts, plot = TRUE, normalize = "none") {
 		data(background_context)
 		return_mat<-return_mat/background_context[,2]
 	}
-	else if (normalzie != "none") {
+	else if (normalize != "none") {
 		stop("Unexpected normalization! Use 'genome', 'exome' or 'none'")
 	}
 	return(return_mat)
