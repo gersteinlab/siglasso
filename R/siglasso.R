@@ -52,7 +52,7 @@ siglasso <- function(sample_spectrum, signature, conf = 0.1, prior,
 			print("No signature supplied, will use the COSMIC v2 signatures")
 			data(cosmic30sig)
 		}
-		elif (default_sig == "cosmic_v3") {
+		else if (default_sig == "cosmic_v3") {
 			print("No signature supplied, will use the COSMIC v3 signatures")
             data(cosmic30sig)
 		}
@@ -121,7 +121,7 @@ siglasso <- function(sample_spectrum, signature, conf = 0.1, prior,
 			}
 			plot_sigs(return_weights, plot_colors, sample_order = plot_orders)
 		}
-		elif (plot_orders){
+		else if (plot_orders){
 			plot_sigs(return_weights, plot_colors, re_order = T)
 		}
 	}
