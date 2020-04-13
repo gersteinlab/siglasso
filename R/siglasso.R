@@ -116,7 +116,7 @@ siglasso <- function(sample_spectrum, signature, conf = 0.1, prior,
 		}
 		if (is.vector(plot_orders)) {
 			if (len(plot_orders) != ncol(sample_spectrum)) {
-				stop(paste("The number of provided plot_orders does not "
+				stop(paste("The number of provided plot_orders does not ",
 				"equal the number of samples!"))
 			}
 			plot_sigs(return_weights, plot_colors, sample_order = plot_orders)
