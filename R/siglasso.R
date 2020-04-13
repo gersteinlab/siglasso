@@ -117,7 +117,7 @@ siglasso <- function(sample_spectrum, signature, conf = 0.1, prior,
 	}
 	colnames(return_weights) <- colnames(sample_spectrum)
 	if (plot){
-		if (plot_colors != NA) {
+		if (!is.na(plot_colors)) {
 			if (len(plot_colors) != ncols(signature)){
 				print(paste("The number of provided plotting colors does not",
 				"equal the number of signatures"))
