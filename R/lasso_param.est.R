@@ -116,7 +116,7 @@ estimate_lasso_parameters <- function(predictor, p_star_hat, gamma, penalty,
         # minor difference (min+sd_at_min) or (min + sd_at_oth_lambda)
         # the latter gives sparser results  (used in cv.glmnet)
         
-         mse_max_allowed <- (predict_mse + sd_multiplier * 
+        mse_max_allowed <- (predict_mse + sd_multiplier * 
 									predict_mse_1sd)[which.min(predict_mse)]
 		# mse_max_allowed <- min(predict_mse) + sd_multiplier * predict_mse_1sd
 		
