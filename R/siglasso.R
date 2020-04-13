@@ -41,34 +41,34 @@
 #' @export
 
 siglasso <- function(sample_spectrum, signature, conf = 0.1, prior, 
-						adaptive = T, gamma = 1, alpha_min = 400, 
-						iter_max = Inf, sd_multiplier = 1.0, elastic_net = F, 
-						plot = T, plot_colors = NA, plot_orders = NULL,
-						reorder = F, normalize = "none", 
-						default_sig = "cosmic_v2") {
+                        adaptive = T, gamma = 1, alpha_min = 400, 
+                        iter_max = Inf, sd_multiplier = 1.0, elastic_net = F, 
+                        plot = T, plot_colors = NA, plot_orders = NULL,
+                        reorder = F, normalize = "none", 
+                        default_sig = "cosmic_v2") {
     if (missing(sample_spectrum)) {
         stop("siglasso(spectrum, signature, prior, adaptive=T, gamma=1, 
                     alpha_min=400, iter_max=20, sd_multiplier=0.5")
     }
     if (missing(signature)) {
-		if (default_sig == "cosmic_v2") {
-			print("No signature supplied, will use COSMIC v2 signatures")
-			data(cosmic30sig)
-			signature <- data.matrix(cosmic30sig)
-		}
-		else if (default_sig == "cosmic_v3_exo") {
-			print("No signature supplied, will use COSMIC v3 (exome)")
+        if (default_sig == "cosmic_v2") {
+            print("No signature supplied, will use COSMIC v2 signatures")
+            data(cosmic30sig)
+            signature <- data.matrix(cosmic30sig)
+        }
+        else if (default_sig == "cosmic_v3_exo") {
+            print("No signature supplied, will use COSMIC v3 (exome)")
             data(cosmic_v3_exo)
-			signature <- data.matrix(cosmic_v3_exo)
-		}
-		else if (default_sig == "cosmic_v3_wholegenome") {
-			print("No signature supplied, will use COSMIC v3 (whole genome)")
+            signature <- data.matrix(cosmic_v3_exo)
+        }
+        else if (default_sig == "cosmic_v3_wholegenome") {
+            print("No signature supplied, will use COSMIC v3 (whole genome)")
             data(cosmic_v3_wholegenome)
-			signature <- data.matrix(cosmic_v3_wgs)
-		}
-		else {
-			stop("Unknown default_sig!")
-		}
+            signature <- data.matrix(cosmic_v3_wgs)
+        }
+        else {
+            stop("Unknown default_sig!")
+        }
     }
     if (nrow(signature) != nrow(sample_spectrum)) {
         stop("The number of rows of signatures do not equal the number of 
@@ -81,61 +81,61 @@ siglasso <- function(sample_spectrum, signature, conf = 0.1, prior,
         stop("The length of prior does not equal the number of signatures!")
     }
 
-	if (normalize == "genome") {
-		print("Will normalize using genome trinucleotide frequency")
-		data(background_context)
-		signature<-signature*background_context[,1]
-		signature<-t(t(signature)/colSums(signature)) 
-	}
-	else if (normalize == "exome") {
-		print("Will normalize using genome trinucleotide frequency")
-		data(background_context)
-		signature<-signature*background_context[,2]
-		signature<-t(t(signature)/colSums(signature)) 
-	}
-	else if (normalize != "none") {
-		stop("Unexpected normalization! Use 'genome', 'exome' or 'none'")
-	}
+    if (normalize == "genome") {
+        print("Will normalize using genome trinucleotide frequency")
+        data(background_context)
+        signature<-signature*background_context[,1]
+        signature<-t(t(signature)/colSums(signature)) 
+    }
+    else if (normalize == "exome") {
+        print("Will normalize using genome trinucleotide frequency")
+        data(background_context)
+        signature<-signature*background_context[,2]
+        signature<-t(t(signature)/colSums(signature)) 
+    }
+    else if (normalize != "none") {
+        stop("Unexpected normalization! Use 'genome', 'exome' or 'none'")
+    }
 
-	sample_spectrum<-data.frame(sample_spectrum)
+    sample_spectrum<-data.frame(sample_spectrum)
    
-	print(sprintf("There are %d samples", ncol(sample_spectrum)))
-	return_weights<-NULL
-	for (k in seq(ncol(sample_spectrum))) {
-		if (length(unique(sample_spectrum[,k])) == 1) {
-			if ((unique(sample_spectrum[,k]))[1] == 0) {
-				stop("The spectrum is an empty vector")
-			}
-			random_idx <- ceiling(length(sample_spectrum[,k]) * runif(2))
-			sample_spectrum[random_idx[1]] <- sample_spectrum[
-												random_idx[1],k] - 1
-			sample_spectrum[random_idx[2]] <- sample_spectrum[
-												random_idx[2],k] + 1
-		}
-		return_weights <- cbind(return_weights, siglasso_internal(
-								sample_spectrum[,k], signature, prior, 
-								adaptive, elastic_net, gamma, alpha_min, 
-								iter_max, sd_multiplier, conf)) 
-	}
-	colnames(return_weights) <- colnames(sample_spectrum)
-	if (plot){
-		if (!is.na(plot_colors)) {
-			if (length(plot_colors) != ncols(signature)){
-				print(paste("The number of provided plotting colors does not",
-				"equal the number of signatures"))
-				print("There might be errors in plotting")
-			}
-		}
-		if (length(plot_orders)>0) {
-			if (length(plot_orders) != ncol(sample_spectrum)) {
-				stop(paste("The number of provided plot_orders does not",
-				"equal the number of samples!"))
-			}
-			plot_sigs(return_weights, plot_colors, sample_order = plot_orders)
-		}
-		else {
-			plot_sigs(return_weights, plot_colors, re_order = )
-		}
-	}
-	return(return_weights)
+    print(sprintf("There are %d samples", ncol(sample_spectrum)))
+    return_weights<-NULL
+    for (k in seq(ncol(sample_spectrum))) {
+        if (length(unique(sample_spectrum[,k])) == 1) {
+            if ((unique(sample_spectrum[,k]))[1] == 0) {
+                stop("The spectrum is an empty vector")
+            }
+            random_idx <- ceiling(length(sample_spectrum[,k]) * runif(2))
+            sample_spectrum[random_idx[1]] <- sample_spectrum[
+                                                random_idx[1],k] - 1
+            sample_spectrum[random_idx[2]] <- sample_spectrum[
+                                                random_idx[2],k] + 1
+        }
+        return_weights <- cbind(return_weights, siglasso_internal(
+                                sample_spectrum[,k], signature, prior, 
+                                adaptive, elastic_net, gamma, alpha_min, 
+                                iter_max, sd_multiplier, conf)) 
+    }
+    colnames(return_weights) <- colnames(sample_spectrum)
+    if (plot){
+        if (!is.na(plot_colors)) {
+            if (length(plot_colors) != ncols(signature)){
+                print(paste("The number of provided plotting colors does not",
+                "equal the number of signatures"))
+                print("There might be errors in plotting")
+            }
+        }
+        if (length(plot_orders)>0) {
+            if (length(plot_orders) != ncol(sample_spectrum)) {
+                stop(paste("The number of provided plot_orders does not",
+                "equal the number of samples!"))
+            }
+            plot_sigs(return_weights, plot_colors, sample_order = plot_orders)
+        }
+        else {
+            plot_sigs(return_weights, plot_colors, re_order = )
+        }
+    }
+    return(return_weights)
 }

@@ -16,8 +16,8 @@
 
 
 estimate_lasso_parameters <- function(predictor, p_star_hat, gamma, penalty, 
-										prior, adaptive, sd_multiplier, 
-										elastic_net = F) {
+                                        prior, adaptive, sd_multiplier, 
+                                        elastic_net = F) {
     lambda_min1se <- 0
     alpha_min1se <- 1
     alpha_seq <- seq(1, 0.1, -0.1)
@@ -37,12 +37,12 @@ estimate_lasso_parameters <- function(predictor, p_star_hat, gamma, penalty,
         }
         predict_sse <- NULL
         K <- nrow(predictor)
-        					lambda_max <- log10(max(glmnet(X, Y, alpha = 1, 
-													intercept = F, 
-													lower.limit = 0, 
-													penalty.factor = 
-													penalty)$lambda))
-					lambda_seq <- 10^seq(lambda_max, lambda_max - 8, -0.05)
+        lambda_max <- log10(max(glmnet(X, Y, alpha = 1, 
+                                        intercept = F, 
+                                        lower.limit = 0, 
+                                        penalty.factor = 
+                                        penalty)$lambda))
+        lambda_seq <- 10^seq(lambda_max, lambda_max - 8, -0.05)
         for (h in seq(1, 20)) {
             while (TRUE) {
                 group <- NULL
@@ -51,11 +51,11 @@ estimate_lasso_parameters <- function(predictor, p_star_hat, gamma, penalty,
                 }
                 flag <- 0
                 for (k in seq(1, 8)) {
-                  if (var(p_star_hat[which(group != g)]) == 0) {
+                  if (var(p_star_hat[which(group != k)]) == 0) {
                     flag <- 1
                     break
                   }
-                  if (0 %in% apply(predictor[which(group != g), ], 2, var)) {
+                  if (0 %in% apply(predictor[which(group != k), ], 2, var)) {
                     flag <- 1
                     break
                   }
@@ -72,40 +72,40 @@ estimate_lasso_parameters <- function(predictor, p_star_hat, gamma, penalty,
                 test_predictor <- predictor[which(group == g), ]
                 
                 if (elastic_net) {
-					lambda_alpha_search <- NULL
-					predict_sse_alpha_search <- NULL
-					for (a in alpha_seq) {
-						lambda_max <- log10(max(glmnet(X, Y, alpha = a, 
-											intercept = F, lower.limit = 0, 
-											penalty.factor = penalty)$lambda))
-						lambda_seq <- 10^seq(lambda_max, lambda_max - 8, -0.05)
-						fit <- glmnet(train_predictor, train_set, alpha = a, 
-										intercept = F, lower.limit = 0, 
-										lambda = lambda_seq, 
-										penalty.factor = penalty)
-						fit_predict <- predict(fit, test_predictor, alpha = a, 
-												intercept = F, lower.limit = 0, 
-												penalty.factor = penalty)
-						predict_sse_alpha_search <- c(predict_sse_alpha_search, 
-													apply(fit_predict, 2, 
-													function(x) sum(x - 
-													test_set)^2))
-					   lambda_alpha_search <- c(lambda_alpha_search, lambda_seq)
-					}
-					lambda_alpha <- rbind(lambda_alpha, lambda_alpha_search)
-					predict_sse <- rbind(predict_sse, predict_sse_alpha_search)
+                    lambda_alpha_search <- NULL
+                    predict_sse_alpha_search <- NULL
+                    for (a in alpha_seq) {
+                        lambda_max <- log10(max(glmnet(X, Y, alpha = a, 
+                                            intercept = F, lower.limit = 0, 
+                                            penalty.factor = penalty)$lambda))
+                        lambda_seq <- 10^seq(lambda_max, lambda_max - 8, -0.05)
+                        fit <- glmnet(train_predictor, train_set, alpha = a, 
+                                        intercept = F, lower.limit = 0, 
+                                        lambda = lambda_seq, 
+                                        penalty.factor = penalty)
+                        fit_predict <- predict(fit, test_predictor, alpha = a, 
+                                                intercept = F, lower.limit = 0, 
+                                                penalty.factor = penalty)
+                        predict_sse_alpha_search <- c(predict_sse_alpha_search, 
+                                                    apply(fit_predict, 2, 
+                                                    function(x) sum(x - 
+                                                    test_set)^2))
+                       lambda_alpha_search <- c(lambda_alpha_search, lambda_seq)
+                    }
+                    lambda_alpha <- rbind(lambda_alpha, lambda_alpha_search)
+                    predict_sse <- rbind(predict_sse, predict_sse_alpha_search)
                 } else {
-					a <- 1
+                    a <- 1
 
-					fit <- glmnet(train_predictor, train_set, alpha = 1, 
-									intercept = F, lower.limit = 0, 
-									lambda = lambda_seq, 
-									penalty.factor = penalty)
-					fit_predict <- predict(fit, test_predictor, alpha = 1, 
-											intercept = F, lower.limit = 0, 
-											penalty.factor = penalty)
-					predict_sse <- rbind(predict_sse, apply(fit_predict, 2, 
-											function(x) sum(x - test_set)^2))
+                    fit <- glmnet(train_predictor, train_set, alpha = 1, 
+                                    intercept = F, lower.limit = 0, 
+                                    lambda = lambda_seq, 
+                                    penalty.factor = penalty)
+                    fit_predict <- predict(fit, test_predictor, alpha = 1, 
+                                            intercept = F, lower.limit = 0, 
+                                            penalty.factor = penalty)
+                    predict_sse <- rbind(predict_sse, apply(fit_predict, 2, 
+                                            function(x) sum(x - test_set)^2))
                 }
             }
         }
@@ -117,27 +117,27 @@ estimate_lasso_parameters <- function(predictor, p_star_hat, gamma, penalty,
         # the latter gives sparser results  (used in cv.glmnet)
         
         mse_max_allowed <- (predict_mse + sd_multiplier * 
-									predict_mse_1sd)[which.min(predict_mse)]
-		# mse_max_allowed <- min(predict_mse) + sd_multiplier * predict_mse_1sd
-		
+                                    predict_mse_1sd)[which.min(predict_mse)]
+        # mse_max_allowed <- min(predict_mse) + sd_multiplier * predict_mse_1sd
+        
         if (elastic_net) {
             idx <- which(predict_mse <= mse_max_allowed)
             alpha_min1se <- max(sort(rep(alpha_seq, length(lambda_seq)), 
-										decreasing = T)[idx])
+                                        decreasing = T)[idx])
             idx_col <- which(sort(rep(alpha_seq, length(lambda_seq)), 
-										decreasing = T) == alpha_min1se)
+                                        decreasing = T) == alpha_min1se)
             idx <- intersect(idx, idx_col)
             lambda_min1se <- max(lambda_alpha[1, idx])
         } else {
             lambda_min1se <- max(lambda_seq[which(predict_mse <= 
-													mse_max_allowed)])
+                                                    mse_max_allowed)])
         }
         
         return(list(lambda_min1se = lambda_min1se, penalty = penalty, 
-					predictor = predictor, lambda_seq = lambda_seq, 
-					alpha_min1se = alpha_min1se, ols_fit = ols_fit))
+                    predictor = predictor, lambda_seq = lambda_seq, 
+                    alpha_min1se = alpha_min1se, ols_fit = ols_fit))
     }
     return(list(lambda_min1se = lambda_min1se, penalty = penalty, 
-				predictor = predictor, lambda_seq = NULL, 
-				alpha_min1se = alpha_min1se, ols_fit = ols_fit))
+                predictor = predictor, lambda_seq = NULL, 
+                alpha_min1se = alpha_min1se, ols_fit = ols_fit))
 }

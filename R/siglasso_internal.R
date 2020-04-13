@@ -23,7 +23,8 @@ siglasso_internal <- function(spectrum, sig, prior, adaptive, elastic_net,
     iter_number <- 0
     predictor <- data.matrix(sig)
     penalty <- rep(1, ncol(sig))
-    
+
+       
     las_pm <- estimate_lasso_parameters(data.matrix(sig), p_star_hat, gamma, 
                                         penalty, prior, adaptive = T, 
                                         sd_multiplier, elastic_net)
@@ -44,10 +45,15 @@ siglasso_internal <- function(spectrum, sig, prior, adaptive, elastic_net,
             K <- length(predictor)
         } else {
             K <- nrow(predictor)
-			# in case p_star_hat becomes constant zeors, we return all 0s
-			if (sum(p_star_hat) == 0) {
-				return(rep(0, ncols(predictor)))
-			}
+            # in case p_star_hat becomes constant zeors, we return all 0s
+            if (sum(p_star_hat) == 0) {
+                return(rep(0, ncols(predictor)))
+            }
+            else if (sd(p_star_hat) == 0) {
+                #add some noise here
+                p_star_hat <- p_star_hat[,1] + 0.01
+                p_star_hat <- p_star_hat/sum(p_star_hat)
+            }
             fit <- glmnet(predictor, p_star_hat, alpha = alpha_min1se, 
                           intercept = F, lower.limit = 0, 
                           lambda = lambda_seq, standardize = T, 
@@ -90,6 +96,15 @@ siglasso_internal <- function(spectrum, sig, prior, adaptive, elastic_net,
         if (sum((p_star_hat_now - p_star_hat)^2) < 1e-08 || 
                 iter_number > iter_max) { break }
         else if (sum((p_star_hat_now - p_star_hat)^2) > 0.001) {
+            
+            if (sum(p_star_hat) == 0) {
+                return(rep(0, ncols(predictor)))
+            }
+            else if (sd(p_star_hat) == 0) {
+                #add some noise here
+                p_star_hat <- p_star_hat[,1] + 0.01
+                p_star_hat <- p_star_hat/sum(p_star_hat)
+            }
             # reestimate the lasso parameter when p_star drifts significantly
             las_pm <- estimate_lasso_parameters(data.matrix(sig), p_star_hat, 
                                           gamma, penalty, prior, adaptive = T, 
@@ -105,9 +120,9 @@ siglasso_internal <- function(spectrum, sig, prior, adaptive, elastic_net,
         p_star_hat_now <- p_star_hat
     }
     names(coef_hat) <- colnames(sig)
-	# normalize if the sum > 1 
-	if (sum(coef_hat) > 1) {
-		coef_hat = coef_hat / sum(coef_hat)
-	}
+    # normalize if the sum > 1 
+    if (sum(coef_hat) > 1) {
+        coef_hat = coef_hat / sum(coef_hat)
+    }
     return(coef_hat)
 }
