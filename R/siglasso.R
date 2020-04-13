@@ -23,10 +23,12 @@
 #' @param plot Boolean variable; if it should barplot the results
 #' @param plot_colors You can supply your own colors here (need to equal the
 #' number of signatures), or by default the program will assign colors.
-#' @param plot_orders Whether to order when plotting or not. It can be 
-#' supplied as FALSE, that is no reorder, or TRUE, that is ordering 
-#' by the sum of signature assignment or a vector, indicating the orders 
-#' (default: FALSE)  
+#' @param plot_orders How to reorder when plotting. It can be 
+#' supplied as NULL, that is no reorder, or reordering by the sum of 
+#' signature assignment (see reorder) or a vector, indicating the orders 
+#' (default: NULL)  
+#' @param reorder Boolean variable indicating whether reorder when plotting
+#' or not. (default: False)
 #' @param normalize Whethere to normalize the signatures before fitting. 
 #' "none", "genome" or "exome". default: "none" (also recommended for COSMIC 
 #' signatures). Note here because normalized mutation counts will be 
@@ -41,8 +43,8 @@
 siglasso <- function(sample_spectrum, signature, conf = 0.1, prior, 
 						adaptive = T, gamma = 1, alpha_min = 400, 
 						iter_max = Inf, sd_multiplier = 1.0, elastic_net = F, 
-						plot = T, plot_colors = NA, plot_orders = F,
-						normalize = "none", 
+						plot = T, plot_colors = NA, plot_orders = NULL,
+						reorder = F, normalize = "none", 
 						default_sig = "cosmic_v2") {
     if (missing(sample_spectrum)) {
         stop("siglasso(spectrum, signature, prior, adaptive=T, gamma=1, 
@@ -118,21 +120,21 @@ siglasso <- function(sample_spectrum, signature, conf = 0.1, prior,
 	colnames(return_weights) <- colnames(sample_spectrum)
 	if (plot){
 		if (!is.na(plot_colors)) {
-			if (len(plot_colors) != ncols(signature)){
+			if (length(plot_colors) != ncols(signature)){
 				print(paste("The number of provided plotting colors does not",
 				"equal the number of signatures"))
 				print("There might be errors in plotting")
 			}
 		}
-		if (is.vector(plot_orders)) {
-			if (len(plot_orders) != ncol(sample_spectrum)) {
+		if (length(plot_orders)>0) {
+			if (length(plot_orders) != ncol(sample_spectrum)) {
 				stop(paste("The number of provided plot_orders does not",
 				"equal the number of samples!"))
 			}
 			plot_sigs(return_weights, plot_colors, sample_order = plot_orders)
 		}
-		else if (plot_orders){
-			plot_sigs(return_weights, plot_colors, re_order = T)
+		else {
+			plot_sigs(return_weights, plot_colors, re_order = )
 		}
 	}
 	return(return_weights)

@@ -29,7 +29,7 @@ plot_sigs <- function(sig_weights, plot_colors = NA,
 		stop(paste("The length of sample_order needs to match the number",  
 					"of columns of sig_weights"))
 	}
-	if (plot_colors == NA){
+	if (is.na(plot_colors)){
 		plot_colors = col_palette(total_sigs)
 	}
 
