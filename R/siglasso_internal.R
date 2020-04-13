@@ -44,6 +44,10 @@ siglasso_internal <- function(spectrum, sig, prior, adaptive, elastic_net,
             K <- length(predictor)
         } else {
             K <- nrow(predictor)
+			# in case p_star_hat becomes constant zeors, we return all 0s
+			if (sum(p_star_hat) == 0) {
+				return(rep(0, ncols(predictor)))
+			}
             fit <- glmnet(predictor, p_star_hat, alpha = alpha_min1se, 
                           intercept = F, lower.limit = 0, 
                           lambda = lambda_seq, standardize = T, 
