@@ -4,11 +4,13 @@
 \alias{plot_sigs}
 \title{Visualize the output of siglasso as barplots}
 \usage{
-plot_sigs(sig_weights, re_order = F, sample_order)
+plot_sigs(sig_weights, plot_colors = NA, re_order = F, sample_order)
 }
 \arguments{
 \item{sig_weights}{A matrix of weigths of signatures in multiple 
 samples}
+
+\item{plot_colors}{Colors for plotting, if NA, it generate its own colors}
 
 \item{re_order}{Should it reorder the samples, default is False and 
 always reorder if sample_order is provided}

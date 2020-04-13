@@ -13,10 +13,13 @@ siglasso(
   gamma = 1,
   alpha_min = 400,
   iter_max = Inf,
-  sd_multiplier = 0.5,
+  sd_multiplier = 1,
   elastic_net = F,
   plot = T,
-  normalize = "none"
+  plot_colors = "NA",
+  plot_orders = F,
+  normalize = "none",
+  default_sig = "cosmic_v2"
 )
 }
 \arguments{
@@ -42,18 +45,29 @@ sensitive to the analysis (default: 1)}
 \item{iter_max}{Maximum iterations (default: Inf)}
 
 \item{sd_multiplier}{cut-off for lambda tuning; how many sd it tolerates 
-from min MSE.}
+from min MSE (default: 1.0).}
 
-\item{elastic_net}{oolean variable indicating whether elastic net should 
+\item{elastic_net}{Boolean variable indicating whether elastic net should 
 be used}
 
 \item{plot}{Boolean variable; if it should barplot the results}
 
-\item{normalize}{whethere to normalize the signatures before fitting. 
+\item{plot_colors}{You can supply your own colors here (need to equal the
+number of signatures), or by default the program will assign colors.}
+
+\item{plot_orders}{Whether to order when plotting or not. It can be 
+supplied as FALSE, that is no reorder, or TRUE, that is ordering 
+by the sum of signature assignment or a vector, indicating the orders 
+(default: FALSE)}
+
+\item{normalize}{Whethere to normalize the signatures before fitting. 
 "none", "genome" or "exome". default: "none" (also recommended for COSMIC 
 signatures). Note here because normalized mutation counts will be 
 not discrete anymore. We applied the normalization on the signature.
 They are mathmatically equivalent.}
+
+\item{default_sig}{Default signature type if no signatures were supplied;
+two choices available so far, "cosmic_v2" (default) or "cosmic_v3"}
 }
 \value{
 A data.frame of weights of all signatures

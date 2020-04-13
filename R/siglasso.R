@@ -33,14 +33,15 @@
 #' not discrete anymore. We applied the normalization on the signature.
 #' They are mathmatically equivalent. 
 #' @param default_sig Default signature type if no signatures were supplied;
-#' two choices available so far, "cosmic_v2" (default) or "cosmic_v3" 
+#' three choices available so far, "cosmic_v2" (default) or "cosmic_v3_exo", 
+#' "cosmic_v3_wholegenome" 
 #' @return A data.frame of weights of all signatures
 #' @export
 
 siglasso <- function(sample_spectrum, signature, conf = 0.1, prior, 
 						adaptive = T, gamma = 1, alpha_min = 400, 
 						iter_max = Inf, sd_multiplier = 1.0, elastic_net = F, 
-						plot = T, plot_colors = "NA", plot_orders = F,
+						plot = T, plot_colors = NA, plot_orders = F,
 						normalize = "none", 
 						default_sig = "cosmic_v2") {
     if (missing(sample_spectrum)) {
@@ -49,14 +50,23 @@ siglasso <- function(sample_spectrum, signature, conf = 0.1, prior,
     }
     if (missing(signature)) {
 		if (default_sig == "cosmic_v2") {
-			print("No signature supplied, will use the COSMIC v2 signatures")
+			print("No signature supplied, will use COSMIC v2 signatures")
 			data(cosmic30sig)
+			signature <- data.matrix(cosmic30sig)
 		}
-		else if (default_sig == "cosmic_v3") {
-			print("No signature supplied, will use the COSMIC v3 signatures")
-            data(cosmic30sig)
+		else if (default_sig == "cosmic_v3_exo") {
+			print("No signature supplied, will use COSMIC v3 (exome)")
+            data(cosmic_v3_exo)
+			signature <- data.matrix(cosmic_v3_exo)
 		}
-        signature <- data.matrix(cosmic30sig)
+		else if (default_sig == "cosmic_v3_wholegenome") {
+			print("No signature supplied, will use COSMIC v3 (whole genome)")
+            data(cosmic_v3_wholegenome)
+			signature <- data.matrix(cosmic_v3_wgs)
+		}
+		else {
+			stop("Unknown default_sig!")
+		}
     }
     if (nrow(signature) != nrow(sample_spectrum)) {
         stop("The number of rows of signatures do not equal the number of 
@@ -109,14 +119,14 @@ siglasso <- function(sample_spectrum, signature, conf = 0.1, prior,
 	if (plot){
 		if (plot_colors != NA) {
 			if (len(plot_colors) != ncols(signature)){
-				print(paste("The number of provided plotting colors does not ",
+				print(paste("The number of provided plotting colors does not",
 				"equal the number of signatures"))
 				print("There might be errors in plotting")
 			}
 		}
 		if (is.vector(plot_orders)) {
 			if (len(plot_orders) != ncol(sample_spectrum)) {
-				stop(paste("The number of provided plot_orders does not ",
+				stop(paste("The number of provided plot_orders does not",
 				"equal the number of samples!"))
 			}
 			plot_sigs(return_weights, plot_colors, sample_order = plot_orders)

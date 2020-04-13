@@ -1,13 +1,14 @@
 Package: siglasso
 Type: Package
 Title: Optimizing Cancer Mutation Signatures Jointly with Sampling Likelihood
-Version: 1.0
-Date: 2019-03-03
+Version: 1.1
+Date: 2020-04-13
 Author: Shantao Li
 Maintainer: Shantao Li <shantaolee@GMAIL>
 Description: siglasso jointly optimizes the likelihood of sampling and signature fitting to attribute signatures in cancer samples. It uses L1 regulairzation,  is able to take priors and sensitive to observed mutation counts.  
 License: GPL (>= 3)
 Depends:
+	R (>= 2.10),
 	nnls (>= 1.4),
 	glmnet (>= 2.0-16),
 	RColorBrewer (>= 1.1-2),
