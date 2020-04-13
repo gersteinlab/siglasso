@@ -16,8 +16,9 @@ siglasso(
   sd_multiplier = 1,
   elastic_net = F,
   plot = T,
-  plot_colors = "NA",
-  plot_orders = F,
+  plot_colors = NA,
+  plot_orders = NULL,
+  reorder = F,
   normalize = "none",
   default_sig = "cosmic_v2"
 )
@@ -55,10 +56,13 @@ be used}
 \item{plot_colors}{You can supply your own colors here (need to equal the
 number of signatures), or by default the program will assign colors.}
 
-\item{plot_orders}{Whether to order when plotting or not. It can be 
-supplied as FALSE, that is no reorder, or TRUE, that is ordering 
-by the sum of signature assignment or a vector, indicating the orders 
-(default: FALSE)}
+\item{plot_orders}{How to reorder when plotting. It can be 
+supplied as NULL, that is no reorder, or reordering by the sum of 
+signature assignment (see reorder) or a vector, indicating the orders 
+(default: NULL)}
+
+\item{reorder}{Boolean variable indicating whether reorder when plotting
+or not. (default: False)}
 
 \item{normalize}{Whethere to normalize the signatures before fitting. 
 "none", "genome" or "exome". default: "none" (also recommended for COSMIC 
@@ -67,7 +71,8 @@ not discrete anymore. We applied the normalization on the signature.
 They are mathmatically equivalent.}
 
 \item{default_sig}{Default signature type if no signatures were supplied;
-two choices available so far, "cosmic_v2" (default) or "cosmic_v3"}
+three choices available so far, "cosmic_v2" (default) or "cosmic_v3_exo", 
+"cosmic_v3_wholegenome"}
 }
 \value{
 A data.frame of weights of all signatures
