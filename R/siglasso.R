@@ -52,7 +52,7 @@ siglasso <- function(sample_spectrum, signature, conf = 0.1, prior,
     }
     if (missing(signature)) {
         if (default_sig == "cosmic_v2") {
-            print("No signature supplied, will use COSMIC v2 signatures")
+            print("No signature supplied, will use COSMIC v2 signatures, we also supply v2 priors in the package")
             data(cosmic30sig)
             signature <- data.matrix(cosmic30sig)
         }
