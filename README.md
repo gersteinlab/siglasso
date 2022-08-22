@@ -140,7 +140,7 @@ Multiple mutational processes drive carcinogenesis, leaving characteristic signa
 This work is accepted by Nature Communications, please cite https://doi.org/10.1038/s41467-020-17388-x
 
 ## Data
-Download sigLASSO output on TCGA samples with COSMIC (v2) priors (http://labmisc.gersteinlab.org/all_sigs.tsv.gz.tar)
+Download sigLASSO output on TCGA samples with COSMIC (v2) priors (http://labmisc.gersteinlab.org/all_sigs.tsv.tar.gz)
 
 ## What is new
 version 1.1 (2020 April)
